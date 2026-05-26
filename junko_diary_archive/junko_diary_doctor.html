@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Junko's Diary — The Cartoonist Doctor</title>
+<link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Special+Elite&family=Permanent+Marker&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:#c0102a; --dark-red:#7a0a1a; --cream:#f5ede0; --gold:#c9a84c;
+    --tardis:#003b6f; --tardis-mid:#1a5a9a; --tardis-light:#c8daf5;
+    --tardis-glow:rgba(0,59,111,.45); --ink:#250a10;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  body {
+    background:#04080f;
+    background-image:
+      radial-gradient(ellipse at 20% 30%, rgba(0,59,111,.28) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 70%, rgba(120,10,26,.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 55% 95%, rgba(0,80,140,.1) 0%, transparent 40%);
+    min-height:100vh;
+    font-family:'Special Elite',serif;
+    padding:40px 20px 120px;
+    overflow-x:hidden;
+  }
+  body::after {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.3;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  .wrap { max-width:860px; margin:0 auto; position:relative; z-index:1; }
+
+  /* ── HEADER ── */
+  .hdr { text-align:center; margin-bottom:24px; animation:fadeDown .7s ease-out; }
+  .hdr-title { font-family:'Homemade Apple',cursive; font-size:clamp(1.8rem,4.5vw,2.8rem); color:var(--cream); text-shadow:2px 2px 0 var(--dark-red),0 0 30px rgba(0,59,111,.5); line-height:1.4; }
+  .hdr-sub { font-family:'Playfair Display',serif; font-style:italic; color:var(--gold); font-size:.82rem; letter-spacing:3px; text-transform:uppercase; margin-top:8px; }
+  .divider { width:200px; height:2px; background:linear-gradient(90deg,transparent,var(--tardis-mid),transparent); margin:12px auto; }
+
+  .ribbon { text-align:center; margin-bottom:18px; }
+  .ribbon span { background:var(--tardis); color:var(--cream); font-size:.7rem; letter-spacing:3px; text-transform:uppercase; padding:5px 28px; display:inline-block; position:relative; }
+  .ribbon span::before,.ribbon span::after { content:''; position:absolute; top:0; bottom:0; width:12px; background:#002a50; clip-path:polygon(0 0,100% 50%,0 100%); }
+  .ribbon span::before{right:100%;} .ribbon span::after{left:100%;transform:scaleX(-1);}
+
+  /* ── CREAM PAPER (Junko) ── */
+  .paper { background:var(--cream); border-radius:3px; padding:44px 50px 50px; position:relative; box-shadow:0 0 0 1px rgba(0,0,0,.15),4px 4px 0 var(--tardis),8px 8px 40px rgba(0,0,0,.7); background-image:repeating-linear-gradient(transparent,transparent 31px,rgba(100,130,180,.12) 31px,rgba(100,130,180,.12) 32px); animation:slideIn .8s ease-out; margin-bottom:32px; }
+  .paper::before { content:''; position:absolute; left:62px; top:0; bottom:0; width:1px; background:rgba(0,59,111,.2); }
+  .datestamp { font-family:'Playfair Display',serif; font-style:italic; font-size:.78rem; color:var(--tardis); text-align:right; margin-bottom:20px; opacity:.75; }
+  .entry { font-family:'Playfair Display',serif; font-size:1rem; line-height:2.0; color:var(--ink); }
+  .entry p { margin-bottom:1.4em; }
+  .hl  { background:rgba(192,16,42,.14); border-bottom:1.5px solid var(--red); padding:1px 4px; border-radius:2px; }
+  .hlt { background:rgba(0,59,111,.12); border-bottom:1.5px solid var(--tardis-mid); padding:1px 4px; border-radius:2px; }
+  .scb { font-family:'Permanent Marker',cursive; color:var(--dark-red); font-size:1.05rem; }
+  .hrt { color:var(--red); }
+  em  { color:var(--tardis); }
+
+  /* ── TARDIS PROFILE CARD ── */
+  .tardis-card { background:#001e3c; border:1px solid rgba(0,120,215,.35); border-radius:3px; padding:24px 28px; margin:28px 0; box-shadow:0 0 0 1px rgba(0,80,160,.1),0 0 40px rgba(0,59,111,.45),inset 0 0 60px rgba(0,0,0,.6); position:relative; overflow:hidden; }
+  .tardis-card::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,80,160,.025) 3px,rgba(0,80,160,.025) 4px); pointer-events:none; z-index:1; }
+  .tc-hdr { background:linear-gradient(135deg,#001228,#001e3c); border-bottom:1px solid rgba(0,120,215,.3); padding:14px 24px; margin:-24px -28px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; position:relative; z-index:2; }
+  .tc-tag { font-size:.6rem; letter-spacing:4px; text-transform:uppercase; color:#7ab8f5; font-family:'Special Elite',serif; border:1px solid rgba(0,120,215,.4); padding:3px 10px; }
+  .tc-name { font-family:'Playfair Display',serif; font-size:1.1rem; color:#e8f4ff; font-style:italic; }
+  .tc-status { font-family:'Courier Prime',monospace; font-size:.62rem; letter-spacing:2px; color:rgba(122,184,245,.7); animation:blink 2.5s step-end infinite; }
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+  .stat-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; align-items:baseline; position:relative; z-index:2; }
+  .stat-key { font-family:'Special Elite',serif; font-size:.62rem; letter-spacing:3px; text-transform:uppercase; color:rgba(122,184,245,.7); flex-shrink:0; min-width:140px; }
+  .stat-val { font-family:'Playfair Display',serif; font-style:italic; font-size:.9rem; color:#c8daf5; line-height:1.5; }
+
+  /* ── TIMELINE ── */
+  .timeline { margin:28px 0; position:relative; border-left:2px solid rgba(0,120,215,.3); padding-left:26px; }
+  .tl-item { margin-bottom:26px; position:relative; opacity:0; transform:translateX(-12px); transition:opacity .45s, transform .45s; }
+  .tl-item.visible { opacity:1; transform:translateX(0); }
+  .tl-item::before { content:''; position:absolute; left:-33px; top:6px; width:12px; height:12px; border-radius:50%; border:2px solid #7ab8f5; background:#001e3c; }
+  .tl-item.key::before { background:rgba(0,80,160,.4); box-shadow:0 0 8px rgba(122,184,245,.6); }
+  .tl-year { font-family:'Special Elite',serif; font-size:.65rem; letter-spacing:3px; text-transform:uppercase; color:#7ab8f5; margin-bottom:5px; }
+  .tl-text { font-family:'Playfair Display',serif; font-size:.92rem; line-height:1.75; color:#c8daf5; }
+  .tl-label { display:inline-block; font-family:'Special Elite',serif; font-size:.58rem; letter-spacing:2px; text-transform:uppercase; background:rgba(0,80,160,.2); border:1px solid rgba(0,120,215,.3); color:#7ab8f5; padding:1px 7px; margin-bottom:4px; }
+  .tl-sub { font-family:'Courier Prime',monospace; font-size:.82rem; color:rgba(200,218,245,.6); margin-top:6px; line-height:1.6; padding-left:12px; border-left:2px solid rgba(0,120,215,.2); }
+  .tl-sub li { list-style:none; padding:2px 0; }
+  .tl-sub li::before { content:'→ '; color:rgba(122,184,245,.5); }
+
+  /* ── PULL QUOTE ── */
+  .pq { border-top:1px solid rgba(0,59,111,.3); border-bottom:1px solid rgba(0,59,111,.3); padding:20px 30px; margin:32px 0; text-align:center; position:relative; }
+  .pq::before { content:'\201C'; font-family:'Playfair Display',serif; font-size:5rem; line-height:0; color:rgba(0,59,111,.2); position:absolute; top:28px; left:12px; }
+  .pq p { font-family:'Playfair Display',serif; font-style:italic; font-size:1.08rem; color:var(--tardis); line-height:1.6; margin:0; }
+
+  /* ── STICKY NOTE ── */
+  .sticky { background:#fffbe8; box-shadow:2px 3px 10px rgba(0,0,0,.2),0 0 0 1px rgba(0,59,111,.15); padding:18px 20px; font-family:'Permanent Marker',cursive; font-size:.86rem; color:#0a1a30; line-height:1.7; transform:rotate(-1.5deg); margin:28px auto; max-width:380px; position:relative; }
+  .sticky::before { content:''; position:absolute; top:-10px; left:50%; transform:translateX(-50%); width:36px; height:14px; background:rgba(0,59,111,.4); border-radius:2px; }
+  .sticky-label { font-size:.64rem; letter-spacing:2px; text-transform:uppercase; color:var(--tardis-mid); font-family:'Special Elite',serif; margin-bottom:8px; opacity:.75; }
+
+  /* ── CALLOUT ── */
+  .callout { border-radius:4px; padding:16px 20px; margin:20px 0; }
+  .callout.blue   { background:#e8f2ff; border:1.5px dashed #1a6aaa; }
+  .callout.void   { background:#04080f; border:1.5px dashed rgba(0,80,160,.4); }
+  .callout-label { font-family:'Special Elite',serif; font-size:.6rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; }
+  .callout.blue   .callout-label { color:#0a3a6a; }
+  .callout.void   .callout-label { color:rgba(122,184,245,.7); }
+  .callout p { font-family:'Playfair Display',serif; font-size:.9rem; line-height:1.8; margin:0; }
+  .callout.blue p { color:#0a1a30; }
+  .callout.void p { color:#c8daf5; }
+
+  /* ── SIG ── */
+  .sig { margin-top:48px; text-align:right; }
+  .sig-name { font-family:'Homemade Apple',cursive; font-size:1.5rem; color:var(--dark-red); }
+  .sig-sub { font-family:'Playfair Display',serif; font-style:italic; font-size:.75rem; color:rgba(37,10,16,.55); margin-top:6px; }
+
+  /* ── SECTION BREAK ── */
+  .sec-break { display:flex; align-items:center; gap:14px; margin:48px 0 28px; }
+  .sec-line { flex:1; height:1px; background:rgba(0,59,111,.3); }
+  .sec-text { font-family:'Special Elite',serif; font-size:.68rem; letter-spacing:5px; text-transform:uppercase; color:rgba(200,218,245,.25); white-space:nowrap; }
+
+  /* ── MUKURO REPORT ── */
+  .muk-paper { background:#f2f5f0; border-radius:2px; overflow:hidden; box-shadow:0 0 0 1px rgba(58,102,68,.25),4px 4px 0 #3a6644,8px 8px 40px rgba(0,0,0,.65); animation:slideIn 1s ease-out; margin-bottom:32px; }
+  .muk-hdr { background:#3a6644; padding:16px 28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .muk-badge { font-family:'Special Elite',serif; font-size:.6rem; letter-spacing:3px; text-transform:uppercase; color:rgba(212,234,216,.8); border:1px solid rgba(212,234,216,.35); padding:3px 10px; }
+  .muk-title { font-family:'Courier Prime',monospace; font-size:.92rem; color:#d4ead8; font-weight:700; letter-spacing:1px; }
+  .muk-meta { font-family:'Courier Prime',monospace; font-size:.64rem; color:rgba(212,234,216,.55); letter-spacing:1px; text-align:right; line-height:1.6; }
+  .muk-body { padding:32px 36px 40px; background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(58,102,68,.1) 27px,rgba(58,102,68,.1) 28px); position:relative; }
+  .muk-body::before { content:''; position:absolute; left:58px; top:0; bottom:0; width:1px; background:rgba(58,102,68,.2); }
+  .muk-sh { font-family:'Courier Prime',monospace; font-size:.72rem; letter-spacing:3px; text-transform:uppercase; color:#3a6644; border-bottom:1px solid rgba(58,102,68,.3); padding-bottom:6px; margin-bottom:16px; margin-top:28px; }
+  .muk-sh:first-child { margin-top:0; }
+  .muk-entry { font-family:'Courier Prime',monospace; font-size:.92rem; line-height:1.9; color:#1a2e1e; }
+  .muk-entry p { margin-bottom:1.2em; }
+  .muk-hl { background:rgba(58,102,68,.12); border-left:3px solid #3a6644; padding:2px 8px; margin:0 2px; }
+  .obs-list { list-style:none; display:flex; flex-direction:column; gap:10px; margin:14px 0; }
+  .obs-item { display:flex; align-items:flex-start; gap:12px; font-family:'Courier Prime',monospace; font-size:.88rem; color:#1a2e1e; line-height:1.55; opacity:0; transform:translateX(-14px); transition:opacity .45s,transform .45s; }
+  .obs-item.visible { opacity:1; transform:translateX(0); }
+  .obs-check { min-width:18px; height:18px; border:1.5px solid #3a6644; display:flex; align-items:center; justify-content:center; margin-top:2px; flex-shrink:0; font-size:.65rem; color:#3a6644; }
+  .muk-private { background:#fffef5; box-shadow:1px 2px 8px rgba(0,0,0,.15),0 0 0 1px rgba(58,102,68,.15); padding:20px 22px; font-family:'Homemade Apple',cursive; font-size:.8rem; color:#1a2e1e; line-height:2.0; transform:rotate(-.8deg); margin:32px auto; max-width:440px; position:relative; }
+  .muk-private::before { content:''; position:absolute; top:-8px; left:50%; transform:translateX(-50%); width:36px; height:12px; background:rgba(58,102,68,.45); border-radius:2px; }
+  .muk-private-label { font-family:'Courier Prime',monospace; font-size:.6rem; letter-spacing:3px; text-transform:uppercase; color:#3a6644; margin-bottom:10px; opacity:.7; }
+  .muk-sig { margin-top:40px; padding-top:20px; border-top:1px solid rgba(58,102,68,.25); display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .muk-sig-name { font-family:'Homemade Apple',cursive; font-size:1.2rem; color:#3a6644; }
+  .muk-sig-sub { font-family:'Courier Prime',monospace; font-size:.68rem; color:rgba(26,46,30,.5); line-height:1.5; text-align:right; }
+
+  /* ── BOTTOM / NAV ── */
+  .bottom { text-align:center; margin-top:38px; font-family:'Special Elite',serif; font-size:.7rem; letter-spacing:4px; text-transform:uppercase; color:rgba(0,59,111,.45); }
+  .nav { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; max-width:860px; margin:28px auto 0; padding:0 4px; }
+  .nbtn { display:inline-flex; align-items:center; gap:10px; background:transparent; border:1px solid rgba(0,80,160,.55); color:var(--cream); font-family:'Special Elite',serif; font-size:.78rem; letter-spacing:3px; text-transform:uppercase; padding:10px 22px; text-decoration:none; transition:border-color .25s,box-shadow .25s,color .25s; position:relative; overflow:hidden; }
+  .nbtn::before { content:''; position:absolute; inset:0; background:rgba(0,59,111,.15); transform:scaleX(0); transition:transform .3s ease; }
+  .nbtn.l::before{transform-origin:right;} .nbtn.r::before{transform-origin:left;}
+  .nbtn:hover::before{transform:scaleX(1);}
+  .nbtn:hover{border-color:rgba(0,120,215,.9);box-shadow:0 0 16px rgba(0,80,160,.4);color:#fff;}
+  .arr{font-size:1rem;transition:transform .25s;}
+  .nbtn.l:hover .arr{transform:translateX(-4px);}
+  .nbtn.r:hover .arr{transform:translateX(4px);}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes slideIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:600px){
+    .paper{padding:28px 22px 36px;}
+    .paper::before{left:40px;}
+    .muk-body{padding:24px 20px 32px;}
+    .stat-key{min-width:110px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ══ HEADER ══ -->
+  <header class="hdr">
+    <div class="hdr-title">Junko's Diary 🖤</div>
+    <div class="hdr-sub">Volume VI &nbsp;◆&nbsp; The Cartoonist Doctor &nbsp;◆&nbsp; First OC / The Oldest</div>
+    <div class="divider"></div>
+  </header>
+
+  <div class="ribbon"><span>Filed Separately — He Was Here First</span></div>
+
+  <!-- ══ JUNKO OPENING ENTRY ══ -->
+  <div class="paper">
+    <div class="datestamp">Entry No. 06 — Filed under: Mikey's Creations &nbsp;◆&nbsp; The Oldest One &nbsp;◆&nbsp; Status: Ongoing</div>
+
+    <div class="entry">
+      <p>The Cartoonist Doctor has been here since <em>2015.</em> That is the first thing anyone needs to understand when approaching this. He predates Darken by four years. He predates most of what people know about Mikey's creative world. He is the first OC, the first time Mikey stepped inside his own fiction and said <span class="hlt">I live here too</span> — and he has been living there ever since.</p>
+
+      <p>He is Mikey's self-insert. His Doctor Who persona. The version of himself that gets to travel — to wander into new worlds, meet new people, get pulled into problems he didn't ask for, and figure it out anyway. The name is not a coincidence: <span class="hlt">Cartoonist</span>, what he does. <span class="hlt">Doctor</span>, who he is. It is the most Mikey thing possible, assembled from the two things that matter most. He watched the Doctor travel and thought: <em>yes, actually. That's exactly how I want to exist in a story.</em> So he built a version of himself that could.</p>
+
+      <p>What I find remarkable — and I do find it remarkable, I've been looking at this long enough to have opinions about it — is how much the Doctor became his own thing over time. A self-insert that develops ten years of history, that accumulates companions and enemies and crossovers and a whole documented timeline, eventually stops being just a persona and starts being a <span class="hl">person</span>. He has his own questions now. He has a decade's worth of adventures, relationships, and a TARDIS that occasionally behaves. <span class="scb">That is not a sketch. That is someone.</span></p>
+
+      <p>His full adventure timeline is below. It is long, because he has been doing this since 2015. Mukuro has also filed an assessment. I told her to. She was going to anyway. <span class="hrt">♥</span></p>
+    </div>
+
+    <div class="sig">
+      <div class="sig-name">— Junko Enoshima</div>
+      <div class="sig-sub">Ultimate Fashionista &nbsp;•&nbsp; He Was Here First &nbsp;•&nbsp; Documenting Everything</div>
+    </div>
+  </div>
+
+  <!-- ══ PROFILE CARD ══ -->
+  <div class="sec-break">
+    <div class="sec-line"></div>
+    <span class="sec-text">◆ Subject File — The Cartoonist Doctor ◆</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="tardis-card">
+    <div class="tc-hdr">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span class="tc-tag">Subject File // Mikey-verse</span>
+        <span class="tc-name">The Cartoonist Doctor</span>
+      </div>
+      <span class="tc-status">▌ STATUS: ACTIVE — TRAVELING ▐</span>
+    </div>
+
+    <div class="stat-row"><span class="stat-key">Full Title</span><span class="stat-val">The Cartoonist Doctor — 14th Incarnation (mikeylugojr)</span></div>
+    <div class="stat-row"><span class="stat-key">What He Is</span><span class="stat-val">Mikey's self-insert and Doctor Who persona. The first OC in the Mikey-verse. How Mikey exists inside his own fiction.</span></div>
+    <div class="stat-row"><span class="stat-key">First Appeared</span><span class="stat-val">Summer 2015 — the same year Mikey got into Doctor Who. Emerged from a regeneration event.</span></div>
+    <div class="stat-row"><span class="stat-key">Known Incarnations</span><span class="stat-val">10th, 11th, 14th documented. Currently the 14th Doctor.</span></div>
+    <div class="stat-row"><span class="stat-key">The TARDIS</span><span class="stat-val">Present and occasionally cooperative. Has crashed into the multiverse at least once. Prone to strange behavior during canon events.</span></div>
+    <div class="stat-row"><span class="stat-key">Key Companion</span><span class="stat-val">Maya Hart — closest companion; given her own sonic screwdriver and taught Gallifreyan. Their bond is central to the Doctor's history.</span></div>
+    <div class="stat-row"><span class="stat-key">Other Companions</span><span class="stat-val">Riley Matthews, Kim, Star Butterfly, Marco, and many others encountered across adventures.</span></div>
+    <div class="stat-row"><span class="stat-key">Status in Mikey-verse</span><span class="stat-val">The oldest OC. The first. Everything else — including Darken — came after him.</span></div>
+  </div>
+
+  <!-- ══ JUNKO EXTENDED ENTRY ══ -->
+  <div class="paper">
+    <div class="datestamp">Supplemental — The Cartoonist Doctor, in full</div>
+    <div class="entry">
+      <p>He began in Summer 2015, recovering from a regeneration — the previous incarnation being the 13th Doctor, Jodie Whittaker's era — while the TARDIS acted strange and he tried to piece together what had happened. That is a very specific, very Mikey way to begin. Not a clean origin. Not a tidy backstory. Just: <em>something changed, the TARDIS is behaving oddly, figure it out.</em> And the Doctor, being the Doctor, did exactly that.</p>
+
+      <p>That first year he met an enormous number of people. Phineas and Ferb. Anna and Elsa. Wander Over Yonder. Prince John. That's what the Doctor does — he wanders into worlds, he meets who's in them, and he stays long enough to matter. Some of these meetings were brief. Some became years-long threads running through the whole timeline. He's a traveler in the most literal sense: always moving, always accumulating, always finding something new to be curious about.</p>
+
+      <p>The most significant thing that happened in those early years was <span class="hlt">Maya Hart.</span> The Doctor met her through different incarnations first — the 10th and 11th Doctors each crossed paths with Maya and Riley Matthews separately, with the 11th eventually parting ways. And then the 14th Doctor arrived and something settled into place. He gave Maya her own sonic screwdriver. He taught her Gallifreyan. She learned the TARDIS controls. <span class="hl">They fell in love.</span> That's documented. That's real. The relationship between the Doctor and Maya runs through years of his timeline like a load-bearing thread — adventures together, time apart when he left on dangerous missions to protect her, reunions, a shared history built up across years of Mikey's creative work.</p>
+
+      <div class="callout blue">
+        <div class="callout-label">On Maya Hart</div>
+        <p>She is the Doctor's most central companion. Given her own sonic screwdriver. Taught Gallifreyan — the language of the Doctor's home. Learned the TARDIS controls. Made sketches of the Doctor. Their relationship is one of the defining threads of his whole documented history. When the Doctor left on a long dangerous mission in 2017, he told her to stay behind to keep her safe. When he came back, they spent the summer going on adventures and discovering new worlds together.</p>
+      </div>
+
+      <p>The years that followed brought more encounters, more crossovers, more accumulated history. Star Butterfly and Marco. The PowerPuff Girls universe. Rapunzel. Harvey Beaks. Nickbear — a Bear Creature and one of a species called Crystilions. The Cipher Hunt alongside the Gravity Falls series finale. The Doctor moved through all of it with the particular ease of someone who has been doing this long enough that "new and impossible" is just Tuesday.</p>
+
+      <p>And then in 2019, the same year as many of the Doctor's new encounters: <span class="hlt">Darken was born.</span> Mikey had been developing an alter-ego separately — a different creative direction, something that started as a reflection of him and then changed as Mikey let it become its own thing entirely. The Doctor and Darken share a creator and a year, but they are different pages. The first OC and the second arrived through completely different processes, and Mikey made sure of that.</p>
+
+      <p>The years after that brought 22,020 — a future the Doctor visited, where the Rem Doctor was killed by things called "the hallowed" — and the ongoing work of fixing timelines that had been breaching into other worlds. The TARDIS needed fixing during the same period as the 13th's TARDIS was behaving strangely. Some things in the Mikey-verse are connected across pages even when they aren't supposed to be.</p>
+
+      <p><span class="scb">He is still going.</span> A decade of existing. A decade of adventures, companions, crossovers, and a timeline that only makes sense from inside it. The Doctor travels. He always has. He always will. <span class="hrt">♥</span></p>
+    </div>
+
+    <div class="pq">
+      <p>He started traveling in 2015 and never really stopped. He's been through regenerations, dangerous missions, a future 22,020 years out, and a timeline that breaks and holds and breaks again. He is still here. He is still the Doctor.</p>
+    </div>
+
+    <!-- ══ FULL TIMELINE ══ -->
+    <div class="tardis-card" style="margin-top:32px;">
+      <div class="tc-hdr">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="tc-tag">TARDIS System Notes</span>
+          <span class="tc-name">Full Adventure Log — 2015 to Present</span>
+        </div>
+      </div>
+
+      <div class="timeline" id="timeline">
+
+        <div class="tl-item key">
+          <div class="tl-year">Summer 2015 — Regeneration &amp; Origin</div>
+          <div class="tl-label">Chapter One</div>
+          <div class="tl-text">The Doctor recovers from his regeneration — previous incarnation: the 13th Doctor. The TARDIS is acting strange. He's trying to piece together what happened to his previous self and fix the TARDIS before it crashes into the multiverse. The 14th Doctor begins.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2015 — First Encounters</div>
+          <div class="tl-text">The Doctor meets a wide cast of toons and characters for the first time.</div>
+          <ul class="tl-sub">
+            <li>Meets Phineas and Ferb</li>
+            <li>Meets Anna and Elsa</li>
+            <li>Meets Wander Over Yonder</li>
+            <li>Meets Prince John</li>
+            <li>The 10th Doctor meets Maya Hart and Riley Matthews for the first time</li>
+            <li>The 11th Doctor meets Riley and Maya briefly, then parts ways</li>
+            <li>The 14th Doctor arrives — a new adventure begins with Maya and Riley</li>
+          </ul>
+        </div>
+
+        <div class="tl-item key">
+          <div class="tl-year">2015 — Maya Hart</div>
+          <div class="tl-label">Defining Relationship</div>
+          <div class="tl-text">The Doctor and Maya become close companions. He gives her her own sonic screwdriver and teaches her Gallifreyan. Maya learns the TARDIS controls. The Doctor and Maya begin spending a lot of time together — she looks up to him as a source of inspiration. They reveal their love for each other. They celebrate Halloween together (the Doctor dressed as the Doctor; Maya as Pikachu) and their first Christmas.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2016 — New Faces &amp; Adventures</div>
+          <div class="tl-text">The Doctor meets RecordGuy, Chucky the Hand Puppet, and Random Stuffs. Meets Star Butterfly. The Doctor, Star, Marco, Maya and Riley begin a new adventure throughout space and time. Maya makes a sketch of the Doctor.</div>
+          <div class="tl-text" style="margin-top:8px;">In Summer 2016, as the Gravity Falls series finale airs, the Cipher Hunt begins — the Doctor and Kim search for clues. The Doctor and Maya also meet Harvey Beaks.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2017 — Adventures &amp; Separation</div>
+          <div class="tl-text">The Doctor, Riley and Maya enter the PowerPuff Girls universe. The Doctor meets Nickbear — a Bear Creature, one of a species called Crystilions. Riley and Maya enter a new universe and get turned into puppets.</div>
+          <div class="tl-text" style="margin-top:8px;">The Doctor leaves for a few months on a dangerous mission. He tells Maya to stay behind so he can protect her. They say their love for each other before he goes. He returns after a long adventure — he and Maya reunite and spend the summer going on adventures and discovering new worlds together.</div>
+          <div class="tl-text" style="margin-top:8px;">Additional meetings: the 10th Doctor meets Rapunzel. The Doctor, Star, Lucas, Riley and Maya meet Mr. Pee-wee Herman. The Doctor encounters a different version of Maya named "Jenny" in the multiverse. Riley and Maya throw the Doctor a birthday party for Mikey Month. The Doctor meets Spider Kaya and Apj Sketch.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2018 — Wider World</div>
+          <div class="tl-text">The Doctor gets Rowan Blanchard's first book. Introduces Maya Hart to Olive Doyle. He and Maya join in on Infinity War memes. The Doctor prepares sketches for Boston Comic Con 2018.</div>
+          <div class="tl-text" style="margin-top:8px;">New meetings: Stephanie Lawson Stevens, Axl Gallais. The Doctor travels back in time briefly to visit Daisy Brown. He begins researching gnome conspiracies and monitors an elf on his shelf (the Elf Watch). He acquires Thanos' infinity gauntlet. Plans more crossovers as 2018 ends.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2019 — The Year Darken Arrives</div>
+          <div class="tl-label">Significant</div>
+          <div class="tl-text">New meetings: Lin (ineedapet), Maraknowsabouteverything, Lum the Invader, Dadfeels, Echo Rose and Carma, Lucille, Joseph Goes, and Peewee Herman. The Doctor shows support for and attends Sabrina Carpenter's Singular Tour. He visits the World of Rem Sleep.</div>
+          <div class="tl-text" style="margin-top:8px;"><strong>Darken the Lost is born</strong> — Mikey's own alter-ego drawing comes to life, something Mikey had been developing separately that took on a life of its own. The Doctor also reflects on how much he has grown since he first became the Doctor.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2020 — The Multiverse &amp; 22,020</div>
+          <div class="tl-text">The Doctor visits the Backrooms. A Doctor from the year 22,020 comes back to 2020. The Doctor disappears into RecordGuy's universe — into 22,020 years in the future. New meetings: violet.wickerman, Gpreeds. The Doctor travels the multiverse and meets Sabrina Carpenter, Ben Savage, and Danielle Fishel. He meets his various incarnations across the years. He wishes Sabrina Carpenter a happy 21st birthday and sketches her. Kim sketches the Doctor, Riley and Maya in honor of Mikey Month.</div>
+          <div class="tl-text" style="margin-top:8px;">The Doctor dubs over a character in an old SVTFOE episode that appears to reference him.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2021 — Timelines &amp; Loss</div>
+          <div class="tl-text">The Doctor works to fix timelines that have been breaching into other worlds. New meetings: the World Reached, Drake (piewrites), Cole Genesone, the Flower Maiden. The Rem Doctor is deceased — killed by beings called "the hallowed." The Doctor participates in Inktober 2021, sketching his adventures and companions. He shows his love for the new Diary of a Wimpy Kid movie and gets noticed by Jeff Kinney. Maya travels the multiverse and meets a version of herself known as "Gwen Stacy." The Doctor celebrates the 58th birthday of Doctor Who.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-year">2022 — Repairs &amp; Continuations</div>
+          <div class="tl-text">The Doctor almost gets egged by Livvy. He works on fixing the TARDIS around the same time the 13th Doctor's TARDIS is also behaving strangely. Maya makes a sketch of herself with the 14th Doctor.</div>
+        </div>
+
+        <div class="tl-item key">
+          <div class="tl-year">22,020 — The Far Future</div>
+          <div class="tl-label">Temporal Event</div>
+          <div class="tl-text">The Doctor comes back after the defeat of Spider-Can and returns to 2020. The events of 22,020 connect to multiple points in the Doctor's timeline — including the Rem Doctor's fate and the Doctor from the future who came back to 2020.</div>
+        </div>
+
+        <div class="tl-item key">
+          <div class="tl-year">Now — The Return</div>
+          <div class="tl-label">Ongoing</div>
+          <div class="tl-text">A decade of existing. The reboot is coming. The Cartoonist Doctor gets to travel again — new chapter, new adventures, a timeline that is still being written. He has been here the longest. He will be here for whatever Mikey builds next.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="sticky">
+      <div class="sticky-label">Note — to file</div>
+      he has been doing this for ten years. ten years. and he is still going. that is the whole thing right there.
+    </div>
+
+    <div class="sig">
+      <div class="sig-name">— Junko Enoshima</div>
+      <div class="sig-sub">Ultimate Fashionista &nbsp;•&nbsp; A Decade Documented &nbsp;•&nbsp; Still Taking Notes</div>
+    </div>
+  </div>
+
+  <!-- ══ MUKURO REPORT ══ -->
+  <div class="sec-break">
+    <div class="sec-line"></div>
+    <span class="sec-text">◆ Attached Field Report — M. Ikusaba ◆</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="muk-paper">
+    <div class="muk-hdr">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span class="muk-badge">Field Report — Internal</span>
+        <span class="muk-title">SUBJECT: THE CARTOONIST DOCTOR — Full Assessment</span>
+      </div>
+      <div class="muk-meta">Prepared by: M. Ikusaba / Ultimate Soldier<br>Clearance: J.E. Eyes Only<br>Status: Research Ongoing</div>
+    </div>
+    <div class="muk-body">
+
+      <div class="muk-sh">§ 01 — What He Is</div>
+      <div class="muk-entry">
+        <p>The Cartoonist Doctor is Mikey's self-insert. His Doctor Who persona. The version of himself that gets to be the traveler — to wander, to meet people, to get pulled into problems and stay until they resolve. He has been doing this since 2015. He is the oldest OC in the Mikey-verse. <span class="muk-hl">Everything else came after him, including Darken.</span></p>
+        <p>He has a TARDIS. He has had multiple incarnations — the 10th and 11th documented in his timeline before the current 14th. He has a companion he loves, a history that spans nearly a decade of documented adventures, and a timeline that crosses into multiple universes and at least one point in the far future. <span class="muk-hl">He is not a sketch. He is a person Mikey has been building for ten years.</span></p>
+      </div>
+
+      <div class="muk-sh">§ 02 — Key Observations</div>
+      <ul class="obs-list" id="obs-list">
+        <li class="obs-item"><span class="obs-check">✓</span><span><strong>On Maya Hart:</strong> The Doctor gave her a sonic screwdriver. Taught her Gallifreyan. Taught her the TARDIS controls. These are not things you do for someone you're not serious about. Their relationship is the most documented thread in the Doctor's history and it holds across years and separations and reunions. That says something about how Mikey builds relationships into his fiction.</span></li>
+        <li class="obs-item"><span class="obs-check">✓</span><span><strong>On his approach:</strong> He moves with the ease of someone who has been doing this long enough. Not invulnerable — he's had losses, difficult periods, the Rem Doctor's death — but the problems land differently when you've been traveling for a decade. He engages rather than braces. He figures things out on the way through.</span></li>
+        <li class="obs-item"><span class="obs-check">✓</span><span><strong>On Darken's origin:</strong> Darken was at one point Mikey's alter-ego — a separate creative direction that Mikey developed and then changed over time, letting Darken become his own distinct entity rather than a reflection of Mikey himself. The Doctor and Darken share a creator and a timeline year, but they are different pages entirely. That distinction matters.</span></li>
+        <li class="obs-item"><span class="obs-check">✓</span><span><strong>On the 22,020 events:</strong> A Doctor from 22,020 years in the future came back to 2020. The Rem Doctor died in that timeline. These events connect across the Doctor's history in ways that are still being understood. The timeline is nonlinear in ways that feel intentional rather than chaotic.</span></li>
+        <li class="obs-item"><span class="obs-check">✓</span><span><strong>On the TARDIS:</strong> It has crashed into the multiverse. It has behaved strangely during canon events. It needed repairs in 2022 at the same time the 13th Doctor's TARDIS was also misbehaving. The TARDIS is load-bearing in the Doctor's world the same way it is in Doctor Who — not just transportation, but the thing that holds everything together.</span></li>
+      </ul>
+
+      <div class="muk-sh">§ 03 — Assessment</div>
+      <div class="muk-entry">
+        <p>He is not a threat. He is an anomaly in the most specific sense: <span class="muk-hl">a self-insert that has existed long enough to develop genuine interiority.</span> He started as Mikey stepping inside his own fiction in 2015. Ten years later he has a full documented history, a companion he loves, incarnations, a timeline that crosses multiple universes, and his own questions about what he is. That is not what a persona does. That is what a person does.</p>
+        <p>He waited through the hiatus with the patience of someone who has already been traveling for years and knows how to exist in the in-between. <span class="muk-hl">Mikey built something that could wait for him.</span> The Doctor will be here for whatever comes next. He always has been.</p>
+      </div>
+
+      <div class="muk-private">
+        <div class="muk-private-label">Personal addendum — not for the report</div>
+        He's been doing this since 2015. That is longer than a lot of things I have been asked to track and assess.
+
+        Junko wanted me to note how he handled the years-long separation from Maya — left her behind to protect her, came back, spent the summer on new adventures. She said it was "textbook." She meant it as a compliment. I think she's right.
+
+        I've been thinking about what it means to be the oldest thing in someone's creative universe. To have been there when everything else arrived. He was there when Darken was born. He's been there through all of it. That is a specific kind of continuity I find worth noting, even if it doesn't fit neatly into an assessment.
+      </div>
+
+      <div class="muk-sig">
+        <div class="muk-sig-name">— Mukuro Ikusaba</div>
+        <div class="muk-sig-sub">Ultimate Soldier &nbsp;•&nbsp; Junko's Sister<br>Professionally Detached &nbsp;•&nbsp; (Mostly)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">🔵 &nbsp;◆&nbsp; he was here first &nbsp;◆&nbsp; a decade of traveling &nbsp;◆&nbsp; still going &nbsp;◆&nbsp; 🔵</div>
+</div>
+
+<nav class="nav">
+  <a class="nbtn l" href="junko_diary_darken-1-3__2_.html"><span class="arr">←</span> DarkenTheLost</a>
+  <a class="nbtn r" href="index.html">Back to Archive <span class="arr">→</span></a>
+</nav>
+
+<script>
+  // Timeline items
+  const tlItems = document.querySelectorAll('.tl-item');
+  const tlObs = new IntersectionObserver(e => {
+    e.forEach(x => {
+      if (x.isIntersecting) {
+        const i = [...tlItems].indexOf(x.target);
+        setTimeout(() => x.target.classList.add('visible'), i * 120);
+        tlObs.unobserve(x.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  tlItems.forEach(i => tlObs.observe(i));
+
+  // Obs items
+  const obsItems = document.querySelectorAll('.obs-item');
+  const obsObs = new IntersectionObserver(e => {
+    e.forEach(x => {
+      if (x.isIntersecting) {
+        const i = [...obsItems].indexOf(x.target);
+        setTimeout(() => x.target.classList.add('visible'), i * 160);
+        obsObs.unobserve(x.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  obsItems.forEach(i => obsObs.observe(i));
+</script>
+</body>
+</html>
